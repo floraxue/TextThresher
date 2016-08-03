@@ -1,21 +1,17 @@
 import React from 'react';
-import { addHighlight } from 'actions/article';
+import { addHighlight, deleteHighlight, selectHighlight } from 'actions/article';
 import { connect } from 'react-redux';
-import 'text-highlighter/src/TextHighlighter'
-
-import { styles } from './styles.scss';
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onHighlight: (start, end, selectedText) => {
-      dispatch(addHighlight(start, end, selectedText));
-    }
-  };
-}
+import jquery from 'jquery';
+import './styles.scss';
+import HighlightModule from 'components/highlight/highlight';
+//import 'text-highlighter/src/TextHighlighter'
 
 const mapStateToProps = state => {
   return { highlights: state.article.highlights,
-           currentTopic: state.article.currentTopic };
+           currentTopic: state.article.currentTopic,
+           topics: state.article.topics
+         //selectedHighlight: state.article.selectedHighlight,
+       };
 }
 
 const Article = React.createClass({
@@ -24,100 +20,41 @@ const Article = React.createClass({
 
   propTypes: {
     article: React.PropTypes.object.isRequired,
-    onHighlight: React.PropTypes.func,
     highlights: React.PropTypes.array,
-    currentTopic: React.PropTypes.string
+    currentTopic: React.PropTypes.string,
   },
 
   componentDidMount: function() {
     let articleContainer = document.getElementById('article-container');
-    this.annotationsObject = new TextHighlighter(articleContainer);
+    /*this.annotationsObject = new TextHighlighter(articleContainer);*/
   },
 
-  getOffset: function(childNodes, targetNode) {
-    // since we're splitting <Article> into <span>s we'll need to find which <span>
-    // anchorOffset is referring to, and find that offset from the start of <Article>
-    var offset = 0;
-    for (var i in childNodes) {
-      var childNode = childNodes[i];
-      if (childNode === targetNode) {
-        break;
-      } else {
-        offset += childNode.textContent.length;
-      }
-    }
-    return offset;
+  serializeData: function() {
+    return this.props.Highlight.highlights;
   },
-
-  handleClick: function() {
-    var selectionObj = window.getSelection();
-    if (selectionObj) {
-      let selectedText = selectionObj.toString();
-      let start = selectionObj.anchorOffset;
-      let end = selectionObj.extentOffset;
-      if (this.articleRef.childNodes.length > 1) {
-        start += this.getOffset(this.articleRef.childNodes,
-                                selectionObj.anchorNode.parentNode);
-        end += this.getOffset(this.articleRef.childNodes,
-                                selectionObj.extentNode.parentNode);
-      }
-      if (start > end) {
-        let tmp = start;
-        start = end;
-        end = tmp;
-      }
-      if (start !== end) {
-        this.props.onHighlight(start, end, selectedText);
-      }
-    }
-  },
-
   render() {
-    // console.log(this.props);
-    // const {topic_id}: string = this.context.params
-    // let topic = this.props.topics[topic_id];
-
-    var text = this.props.article.text;
-    var highlights = this.props.highlights || [];
-
-    var start = 0;
-    var tail = '';
-    var l = highlights.length;
-
-    if (l === 0) {
-      tail = text;
-    } else if (highlights[l - 1].end !== text.length) {
-      tail = <span>{text.substring(highlights[l - 1].end, text.length)}</span>;
-    }
-
+    console.log('article')
+    var colors =['rgb(241, 96, 97)', 'rgb(253, 212, 132)', 'rgb(175, 215, 146)', 'rgb(168, 210, 191)', 'rgb(255,153,000)', 'rgb(102,000,153)', 'rgb(000,153,153)', 'rgb(255,102,255)', 'rgb(000,051,153)', 'rgb(153,000,204)', 'rgb(70,194,64)', 'rgb(94,242,188)'];
     return (
       <div className='article'>
         <div className='tua__header-text'>
           Focus on the bold text about FOO and answer the questions.
         </div>
-        <div ref={(ref) => this.articleRef = ref} id='article-container' className='article' onClick={this.handleClick}>
-          {Array(highlights.length * 2).fill().map((_,i) => {
-            var curHL = highlights[i / 2 | 0];
-            if (i % 2 === 0) {
-              // render normal text
-              return (<span key={i}>{text.substring(start, curHL.start)}</span>);
-            } else {
-              // render highlight
-              start = curHL.end;
-              return (<span key={i}
-                            className={'highlighted topic' + curHL.topic}
-                      >{text.substring(curHL.start, curHL.end)}</span>);
-            }
-          })}
-          { tail }
+        <div id='article-container' className='article'>
+        <HighlightModule
+        colors={colors}
+        text={this.props.article.text} //Hard copy of text that goes unchanged
+        topics={this.props.topics} //Using to adapt merge-colors properly
+        currentTopic={this.props.currentTopic} //Needs current from outside
+        />
         </div>
       </div>
     );
   }
-
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
+  //mapDispatchToProps
 )(Article);
