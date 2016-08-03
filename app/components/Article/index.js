@@ -1,8 +1,6 @@
 import React from 'react';
 import { addHighlight, deleteHighlight, selectHighlight } from 'actions/article';
 import { connect } from 'react-redux';
-import jquery from 'jquery';
-import './styles.scss';
 import HighlightModule from 'components/highlight/highlight';
 //import 'text-highlighter/src/TextHighlighter'
 
@@ -26,7 +24,6 @@ const Article = React.createClass({
 
   componentDidMount: function() {
     let articleContainer = document.getElementById('article-container');
-    /*this.annotationsObject = new TextHighlighter(articleContainer);*/
   },
 
   serializeData: function() {
@@ -34,6 +31,12 @@ const Article = React.createClass({
   },
   render() {
     console.log('article')
+    /* Temporary Color Input
+    Need to implement more flexible color system for topicpicker, hard-coding colors into styles is very inflexible
+    and doesn't work well with the highlightModule
+    To make the highModule as self-contained as possible it is passed in a list of rgb colors that
+    matches with the topic at the corresponding index
+    */
     var colors =['rgb(241, 96, 97)', 'rgb(253, 212, 132)', 'rgb(175, 215, 146)', 'rgb(168, 210, 191)', 'rgb(255,153,000)', 'rgb(102,000,153)', 'rgb(000,153,153)', 'rgb(255,102,255)', 'rgb(000,051,153)', 'rgb(153,000,204)', 'rgb(70,194,64)', 'rgb(94,242,188)'];
     return (
       <div className='article'>
