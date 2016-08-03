@@ -42,6 +42,7 @@ const TopicPicker = React.createClass({
       // TODO: we're getting topics in props, but it's structure looks outdated
       // in any case it needs to be removed or refactored as topic data
       // should filter down
+      //console.log(this.props.topics)
       topicsTmp: [
         { id: '1', name: 'Topic 1',
           description: `
