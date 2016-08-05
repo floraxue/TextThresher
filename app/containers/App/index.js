@@ -14,7 +14,10 @@ export default React.createClass({
     children: React.PropTypes.object.isRequired
   },
 
+  /* add router here? */
   render() {
+    console.log('app')
+    console.log(this.props)
     return (
       <Provider store={store}>
         <div className='app'>

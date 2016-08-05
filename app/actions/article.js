@@ -1,13 +1,31 @@
+
 export function fetchArticle(articleId) {
   return (dispatch) => {
     dispatch({ type: 'FETCH_ARTICLE', articleId});
+    //response = urlopen('http://localhost:5000/api/articles/')
+    //check = json.load(response)
+    //console.log('dispatch article.js')
+    //console.log(check)
 
+    //var xhr = new XMLHttpRequest();
+    //xhr.open('GET', 'http://localhost:5000/api/articles/');
+    //console.log(xhr)
+
+
+    //console.log(articleId)
     return fetch(`http://localhost:5000/api/articles/${articleId}/?format=json`) // TODO: resolve this absolute URL issue with backend
       .then(response => response.json())
       .then(
         (response) => dispatch({ type: 'FETCH_ARTICLE_SUCCESS', response}),
         (error) => dispatch({ type: 'FETCH_ARTICLE_FAIL', error})
       );
+
+    /*return fetch('http://localhost:5000/api/articles/') // TODO: resolve this absolute URL issue with backend
+      .then(response => response.json())
+      .then(
+        (response) => dispatch({ type: 'FETCH_ARTICLE_SUCCESS', response}),
+        (error) => dispatch({ type: 'FETCH_ARTICLE_FAIL', error})
+    );*/
   };
 }
 

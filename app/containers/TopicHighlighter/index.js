@@ -14,6 +14,8 @@ import TopicPicker from 'components/TopicPicker';
 
 import { styles } from './styles.scss';
 
+import $ from 'jquery';
+
 const mapStateToProps = state => {
   return {
     article: state.article.article,
@@ -33,20 +35,36 @@ export class TopicHighlighter extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchArticle(this.props.routeParams.articleId);
   }
 
+  componentWillMount() {
+  }
+
+
+
   componentWillReceiveProps(nextProps) {
+    console.log('receive')
+    console.log(nextProps)
     if (this.props.currentArticle != nextProps.routeParams.articleId && !nextProps.article.isFetching){
       this.props.fetchArticle(nextProps.routeParams.articleId);
+      console.log('fetch success')
     }
   }
 
   render() {
+
     let current_article = this.props.currentArticle;
+    console.log('topic highlighter')
+    console.log(this.props)
 
     let article = this.props.article;
     let topics = this.props.topics[current_article];
+
+    console.log('topic highlighter')
+    console.log(article)
+    console.log(topics)
+    console.log(this.props)
+
 
     if (this.props.nextArticle == undefined) {
       return (<div>DONE</div>) // TODO: Clean this up.

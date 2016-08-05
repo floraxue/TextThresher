@@ -13,7 +13,7 @@ function getInitialState() {
     article: {},
     currentArticle: null,
     nextArticle: null,
-    topics: topicJsonMock.results
+    topics: null//topicJsonMock.results
   };
 }
 
@@ -43,6 +43,8 @@ export function article(state = initialState, action) {
         nextArticle: nextArticleIndex
       }
     case 'FETCH_ARTICLE_SUCCESS':
+      console.log(action)
+      console.log(action.response)
       return {
         ...state,
         article: action.response

@@ -1,6 +1,7 @@
 import React from 'react';
 import { addHighlight } from 'actions/article';
 import { connect } from 'react-redux';
+import $ from 'jquery';
 
 import 'text-highlighter/src/TextHighlighter'
 
@@ -31,6 +32,15 @@ const Article = React.createClass({
   componentDidMount: function() {
     let articleContainer = document.getElementById('article-container');
     this.annotationsObject = new TextHighlighter(articleContainer);
+    /*var xml = new XMLHttpRequest();
+    var url = 'http://localhost:5000/api/articles/';
+    xml.open("GET", url, true);
+    console.log(xml)*/
+    /*console.log(this.props)
+    var url = "http://localhost:5000/api/articles/${articleId}/?format=json";
+    $.getJson(url, function(data){
+      this.props.article = data
+    });*/
   },
 
   render() {

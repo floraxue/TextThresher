@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from models import Article, Topic, HighlightGroup, Client, Question, Answer, ArticleHighlight
-from serializers import (UserSerializer, ArticleSerializer, TopicSerializer, 
+from serializers import (UserSerializer, ArticleSerializer, TopicSerializer,
                          HighlightGroupSerializer, ClientSerializer, QuestionSerializer,
                          ArticleHighlightSerializer, RootTopicSerializer)
 
@@ -15,7 +15,7 @@ from serializers import (UserSerializer, ArticleSerializer, TopicSerializer,
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
-    serializer_class = ClientSerializer    
+    serializer_class = ClientSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -57,6 +57,7 @@ def topic(request, id):
     """
     if request.method == 'GET':
         topics = Topic.objects.get(id=id)
+        console.log(topics)
         serializer = TopicSerializer(topics, many=False)
         return Response(serializer.data)
 
@@ -68,6 +69,7 @@ def child_topics(request, id):
     """
     if request.method == 'GET':
         topics = Topic.objects.get(parent=Topic.objects.get(id=id))
+        console.log(topics)
         serializer = TopicSerializer(topics, many=False)
         return Response(serializer.data)
 

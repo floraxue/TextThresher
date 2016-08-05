@@ -31,7 +31,7 @@ const TopicPicker = React.createClass({
 
   render() {
     let topics = this.props.topics;
-
+    console.log(topics)
     return (
       <div className='topic-picker topic-picker--left topic-picker--open'>
         <div className="topic-picker__header">
