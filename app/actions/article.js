@@ -2,17 +2,7 @@
 export function fetchArticle(articleId) {
   return (dispatch) => {
     dispatch({ type: 'FETCH_ARTICLE', articleId});
-    //response = urlopen('http://localhost:5000/api/articles/')
-    //check = json.load(response)
-    //console.log('dispatch article.js')
-    //console.log(check)
-
-    //var xhr = new XMLHttpRequest();
-    //xhr.open('GET', 'http://localhost:5000/api/articles/');
-    //console.log(xhr)
-
-
-    //console.log(articleId)
+    console.log('fetchArticle ')
     return fetch(`http://localhost:5000/api/articles/${articleId}/?format=json`) // TODO: resolve this absolute URL issue with backend
       .then(response => response.json())
       .then(
@@ -32,7 +22,7 @@ export function fetchArticle(articleId) {
 export function fetchTopic(topicId) {
   return (dispatch) => {
     dispatch({ type: 'FETCH_TOPIC'});
-
+    console.log('fetch topic')
     return fetch(`http://localhost:5000/api/topics/${topicId}/?format=json`) // TODO: resolve this absolute URL issue with backend
       .then(response => response.json())
       .then(

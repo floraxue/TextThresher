@@ -14,14 +14,16 @@ import TopicPicker from 'components/TopicPicker';
 
 import { styles } from './styles.scss';
 
-import $ from 'jquery';
+import $ from 'axios';
 
 const mapStateToProps = state => {
   return {
     article: state.article.article,
     currentArticle: state.article.currentArticle,
     nextArticle: state.article.nextArticle,
-    topics: state.article.topics
+    topics: state.article.topics,
+    articles: state.article.articles,
+    currentIndex: state.article.currentIndex
   };
 }
 
@@ -34,21 +36,70 @@ export class TopicHighlighter extends Component {
     super(props);
   }
 
-  componentDidMount() {
-  }
+
 
   componentWillMount() {
+
+    console.log('prepare props')
+    /*var url_topics = 'http://192.168.99.100:5000/api/topics/';
+    var url_articles = 'http://192.168.99.100:5000/api/articles/'
+    var current_id = this.props.params.articleId
+    var topics;
+    var current;
+    var articles;
+    var article_index;
+    var nextArticle;
+
+    $.get(url_topics).then(function(data) {
+      topics = data.data.results
+    }).catch(function(error){
+      console.log(error)
+    })
+
+    $.get(url_articles).then(function(data) {
+      articles = data.data.results
+    }).catch(function(error){
+      console.log(error)
+    })
+
+    for (var i = 0; i < articles.length; i++) {
+      if(articles[i].article_id == current_id) {
+        current = articles[i]
+        article_index = i
+        nextArticle = articles[i+1]
+      }
+    }
+
+    this.setState({
+      article: current,
+      topics: topics,
+      currentArticle: current,
+      nextArticle: nextArticle,
+      articles: articles,
+      currentIndex: article_index
+    })
+*/
   }
 
+  prepareTopics() {
+    console.log('prepare topics')
+    var url_topics = 'http://192.168.99.100:5000/api/topics/';
+    $.get(url_topics).then(function(data) {
+      return data.data.results
+    }).catch(function(error){
+      console.log(error)
+      return
+    })
+  }
 
 
   componentWillReceiveProps(nextProps) {
-    console.log('receive')
+    /*console.log('receive')
     console.log(nextProps)
     if (this.props.currentArticle != nextProps.routeParams.articleId && !nextProps.article.isFetching){
       this.props.fetchArticle(nextProps.routeParams.articleId);
       console.log('fetch success')
-    }
+    }*/
   }
 
   render() {

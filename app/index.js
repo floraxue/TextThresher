@@ -73,72 +73,49 @@ var Home = React.createClass({
 
 var TopicHighlighterWrapper = React.createClass({
 
-  prepareCurrent: function() {
-    var id = this.props.params.articleId
-    var urlArticle = 'http://192.168.99.100:5000/api/articles/';
-    $.get(urlArticle).then(function(data) {
-      console.log('prepare current')
-      console.log(data.data)
-      return data.data;
-    }).catch(function(error){
-      console.log(error)
-    })
+  componentWillMount() {
+    console.log('will mount highlight wrapper')
+    this.prepareTopics()
+    this.prepareArticles()
   },
 
-  prepareArticles: function() {
-    console.log('prepare articles')
-    var id = this.props.params.articleId
-    var urlArticle = 'http://192.168.99.100:5000/api/articles/';
-    $.get(urlArticle).then(function(data) {
-      var results = data.data.results
-      var length = results.length
-      for (var i = 0; 0 < length; i++) {
-        if (results[i].article_id == id) {
-          var current = results[i];
-          var next = null;
-          var last = results.length - 1
-          if (i == last) {
-            return [current, next]
-          } else {
-            return [current, results[i+1]]
-          }
-        }
-      }
+  prepareTopics: function(this) {
+    console.log('prepare topics')
+    var url_topics = 'http://192.168.99.100:5000/api/topics/';
+    $.get(url_topics).then(function(data) {
+      console.log(data)
+      this.setState({
+        topics: data.data.results
+      })
     }).catch(function(error){
       console.log(error)
       return
     })
   },
-  prepareTopics: function() {
-    console.log('prepare topics')
-    var url_topics = 'http://192.168.99.100:5000/api/topics/';
-    $.get(url_topics).then(function(data) {
-      return data.data.results
+
+  prepareArticles: function(this) {
+    console.log('prepare articles')
+    var url_articles = 'http://192.168.99.100:5000/api/articles/';
+    $.get(url_articles).then(function(data) {
+      console.log(data)
+      this.setState({
+        articles: data.data.results
+      })
     }).catch(function(error){
       console.log(error)
       return
     })
   },
   render() {
-    var current = this.prepareCurrent();
-    var topics = this.prepareTopics();
-
-    while (!current) {
-      return (
-        <div>
-        Loading
-        </div>
-      )
-    }
-
+    console.log('render topic highlighter')
+    console.log(this.props)
+    /*article={current}
+    currentArticle={current}
+    nextArticle={current}
+    topics={topics}*/
 
     return (
-      <TopicHighlighter
-      article={current}
-      currentArticle={current}
-      nextArticle={current}
-      topics={topics}
-      />
+      <TopicHighlighter/>
     );
   }
 })
@@ -154,12 +131,14 @@ let elem = document.createElement('div');
 elem.id = ('react-root');
 document.body.appendChild(elem);
 
+
 const routes = (
   <Router history={ hashHistory } component={ RouteWrapper }>
     <Route path='/' component={AppWrapper}>
-      <IndexRoute component={Home}></IndexRoute>
-      <Route path='article/:articleId' component={TopicHighlighterWrapper} ></Route>
-      <Route path='quiz' component={QuizWrapper} ></Route>
+      <IndexRoute component={Home}/>
+      <Route path='article/:articleId' component={TopicHighlighterWrapper}/>
+      <Route path='quiz' component={Quiz}/>
+      <Route path='test/:articleId' component={TopicHighlighterWrapper}/>
     </Route>
   </Router>
 );
